@@ -7,8 +7,15 @@ import { config } from "./config";
 run().catch((e) => console.error(e));
 
 async function run() {
-  const httpServer = http.createServer();
-  const socketServer = new Server(httpServer);
+  const httpServer = http.createServer((req, res) => {
+    res.end("Hello World");
+  });
+
+  const socketServer = new Server(httpServer, {
+    cors: {
+      origin: "*",
+    },
+  });
   const room = await Room.makeRoom();
 
   init(socketServer, room);
